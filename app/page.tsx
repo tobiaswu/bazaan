@@ -34,6 +34,15 @@ export default function Home() {
             />
           </div>
         </div>
+        <div className="container">
+          <Image
+            className="w-auto h-6"
+            src="/100-on-chain-icp-badge.svg"
+            alt="Built 100% on-chain Internet Computer badge"
+            width={0}
+            height={0}
+          />
+        </div>
       </section>
     </>
   );
