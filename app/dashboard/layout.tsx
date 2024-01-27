@@ -1,5 +1,6 @@
 'use client';
 
+import { Sidebar } from '@/components/Sidebar';
 import { AuthProvider } from '@/context/AuthProvider';
 
 export default function DashboardLayout({
@@ -7,5 +8,12 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <div className="flex">
+        <Sidebar />
+        {children}
+      </div>
+    </AuthProvider>
+  );
 }

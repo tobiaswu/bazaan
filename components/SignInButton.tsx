@@ -1,5 +1,5 @@
 import { signIn } from '@junobuild/core-peer';
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 
 export const SignInButton = () => {
