@@ -1,3 +1,4 @@
+import { RouteId } from '@/lib';
 import { User, authSubscribe } from '@junobuild/core-peer';
 import { useRouter } from 'next/navigation';
 import { ReactNode, createContext, useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user) {
-      router.push('/dashboard');
+      router.push(RouteId.dashboard);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

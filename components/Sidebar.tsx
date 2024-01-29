@@ -2,6 +2,9 @@ import { LayoutDashboard, PlusCircle, Settings, Store } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
+import Link from 'next/link';
+import { RouteId } from '@/lib';
+import { CreateShopDialog } from './CreateShopDialog';
 
 export const Sidebar = () => {
   return (
@@ -19,19 +22,25 @@ export const Sidebar = () => {
         </Button>
       </div>
 
-      <div className="flex items-center gap-2">
-        <LayoutDashboard />
-        Discovery
-      </div>
+      <Link href={RouteId.dashboard}>
+        <div className="flex items-center gap-2">
+          <LayoutDashboard />
+          Discovery
+        </div>
+      </Link>
 
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Store />
           My Shop
         </div>
-        <Button variant="ghost" size="icon">
-          <PlusCircle />
-        </Button>
+        <CreateShopDialog
+          triggerElement={
+            <Button variant="ghost" size="icon">
+              <PlusCircle />
+            </Button>
+          }
+        />
       </div>
 
       <Separator />

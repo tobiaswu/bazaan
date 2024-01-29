@@ -1,4 +1,4 @@
-export type RouteId = {
-  root: '/';
-  dashboard: '/dashboard';
+export const RouteId = {
+  root: '/',
+  dashboard: '/dashboard',
 };

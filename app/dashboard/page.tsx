@@ -1,3 +1,5 @@
+import { CreateChannelDialog } from '@/components/CreateChannelDialog';
+import { CreateShopDialog } from '@/components/CreateShopDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -8,8 +10,12 @@ export default function Dashboard() {
         <h1 className="font-bold text-2xl">Discovery</h1>
         <Input type="search" placeholder="Search for channels or shops" />
         <div className="flex gap-2">
-          <Button variant="outline">Create a channel</Button>
-          <Button variant="outline">Create a shop</Button>
+          <CreateChannelDialog
+            triggerElement={<Button variant="outline">Create a channel</Button>}
+          />
+          <CreateShopDialog
+            triggerElement={<Button variant="outline">Create a shop</Button>}
+          />
         </div>
       </div>
     </div>
