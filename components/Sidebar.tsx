@@ -5,6 +5,7 @@ import { Separator } from './ui/separator';
 import Link from 'next/link';
 import { RouteId } from '@/lib';
 import { CreateShopDialog } from './CreateShopDialog';
+import { SettingsDropdownMenu } from './SettingsDropdownMenu';
 
 export const Sidebar = () => {
   return (
@@ -17,9 +18,13 @@ export const Sidebar = () => {
           </Avatar>
           Amanda
         </div>
-        <Button variant="ghost" size="icon">
-          <Settings />
-        </Button>
+        <SettingsDropdownMenu
+          triggerElement={
+            <Button variant="ghost" size="icon">
+              <Settings />
+            </Button>
+          }
+        />
       </div>
 
       <Link href={RouteId.dashboard}>
