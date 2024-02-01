@@ -3,7 +3,7 @@
 import { Sidebar } from '@/components/Sidebar';
 import { AuthProvider } from '@/context/AuthProvider';
 
-export default function DashboardLayout({
+export default function CoreAppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

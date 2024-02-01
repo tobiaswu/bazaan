@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user) {
-      router.push(RouteId.dashboard);
+      router.push(RouteId.discovery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

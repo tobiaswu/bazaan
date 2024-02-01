@@ -1,4 +1,5 @@
 export const RouteId = {
   root: '/',
-  dashboard: '/dashboard',
+  discovery: '/discovery',
+  shop: (id: string) => `/shop?id=${id}`,
 };

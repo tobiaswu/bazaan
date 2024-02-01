@@ -2,7 +2,7 @@
 
 import { LayoutDashboard, PlusCircle, Settings, Store } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
+import { Button, buttonVariants } from './ui/button';
 import { Separator } from './ui/separator';
 import Link from 'next/link';
 import { RouteId } from '@/lib';
@@ -11,7 +11,10 @@ import { SettingsDropdownMenu } from './SettingsDropdownMenu';
 import { useShop } from '@/hooks';
 
 export const Sidebar = () => {
-  const { hasShop } = useShop();
+  const { hasShop, data: shops } = useShop();
+
+  console.log(shops);
+  
 
   return (
     <div className="max-w-xs bg-slate-300 flex flex-col gap-4 h-screen p-2">
@@ -32,14 +35,22 @@ export const Sidebar = () => {
         />
       </div>
 
-      <Link href={RouteId.dashboard}>
+      <Link
+        className={buttonVariants({ variant: 'ghost' })}
+        href={RouteId.discovery}
+      >
         <div className="flex items-center gap-2">
           <LayoutDashboard />
           Discovery
         </div>
       </Link>
 
-      <div className="flex items-center justify-between gap-2">
+      <Link
+        href={RouteId.shop("")}
+        className={`flex items-center justify-between gap-2 ${buttonVariants({
+          variant: 'ghost',
+        })}`}
+      >
         <div className="flex items-center gap-2">
           <Store />
           My Shop
@@ -51,7 +62,7 @@ export const Sidebar = () => {
             </Button>
           }
         />
-      </div>
+      </Link>
 
       <Separator />
     </div>

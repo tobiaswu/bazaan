@@ -7,7 +7,7 @@ export const SignInButton = () => {
   const router = useRouter();
 
   const handleSignIn = async () => {
-    await signIn().then(() => router.push(RouteId.dashboard));
+    await signIn().then(() => router.push(RouteId.discovery));
   };
 
   return <Button onClick={handleSignIn}>Launch app</Button>;

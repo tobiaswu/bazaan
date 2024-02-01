@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useShop } from '@/hooks';
 
-export default function Dashboard() {
+export default function Discovery() {
   const { hasShop } = useShop();
 
   return (

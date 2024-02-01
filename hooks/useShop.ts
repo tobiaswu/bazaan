@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '.';
-import { listDocs } from '@junobuild/core-peer';
+import { Doc, listDocs } from '@junobuild/core-peer';
 
 export const useShop = () => {
   const { user } = useAuth();
   const [hasShop, setHasShop] = useState<boolean>(true);
+  const [data, setData] = useState<Doc<unknown>[]>([]);
 
-  const hasShops = async () => {
-    await listDocs({
+  const shops = async () => {
+    const listedShops = await listDocs({
       collection: 'shops',
       filter: {
         owner: user?.owner,
       },
-    })
-      .then((data) => data.items_length > 0)
-      .then((result) => setHasShop(result));
+    }).then((data) => data);
+
+    setHasShop(listedShops.items_length > 0);
+    setData(listedShops.items);
   };
 
   useEffect(() => {
-    (async () => await hasShops())();
+    (async () => await shops())();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  return { hasShop };
+  return { hasShop, data };
 };
