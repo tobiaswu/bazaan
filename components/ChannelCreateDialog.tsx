@@ -1,5 +1,5 @@
-'use client';
-
+import { useForm } from 'react-hook-form';
+import { ChannelCitySelect } from './ChannelCitySelect';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -10,14 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { ShopDesignSelect } from './ShopDesignSelect';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ShopDesigns } from '@/lib/enums';
-import { useForm } from 'react-hook-form';
-import { nanoid } from 'nanoid';
 import {
   Form,
   FormControl,
@@ -26,8 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { nanoid } from 'nanoid';
 import { setDoc } from '@junobuild/core-peer';
-import { ShopDto } from '@/lib/types';
+import { ChannelDto } from '@/lib/types';
 
 const formSchema = z.object({
   title: z
@@ -46,35 +43,34 @@ const formSchema = z.object({
     .max(160, {
       message: 'Description must not be longer than 160 characters.',
     }),
-  design: z.enum(
-    [ShopDesigns.EMERALD, ShopDesigns.SAPPHIRE, ShopDesigns.RUBY],
-    {
-      required_error: 'Please select a design.',
-    }
-  ),
+  city: z.string().min(1, {
+    message: 'Please select a city.',
+  }),
 });
 
-export interface ShopCreateDialogProps {
+export interface CreateChannelDialogProps {
   triggerElement: JSX.Element;
 }
 
-export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
+export const CreateChannelDialog = ({
+  triggerElement,
+}: CreateChannelDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       description: '',
-      design: undefined,
+      city: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const shopId = nanoid();
+    const channelId = nanoid();
 
-    await setDoc<ShopDto>({
-      collection: 'shops',
+    await setDoc<ChannelDto>({
+      collection: 'channels',
       doc: {
-        key: shopId,
+        key: channelId,
         data: values,
       },
     });
@@ -85,9 +81,9 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
       <DialogTrigger asChild>{triggerElement}</DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
-          <DialogTitle>Create your shop</DialogTitle>
+          <DialogTitle>Create a channel</DialogTitle>
           <DialogDescription>
-            Set a name, a description and choose a design for your shop.
+            Set a name, a description and the location of your channel.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -97,9 +93,9 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shop name</FormLabel>
+                  <FormLabel>Channel name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My awesome shop" {...field} />
+                    <Input placeholder="Local channel" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,9 +106,12 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shop description</FormLabel>
+                  <FormLabel>Channel description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="I'm selling..." {...field} />
+                    <Textarea
+                      placeholder="This channel is about..."
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,13 +119,13 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
             />
             <FormField
               control={form.control}
-              name="design"
+              name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shop design</FormLabel>
+                  <FormLabel>Channel location</FormLabel>
                   <FormControl>
-                    <ShopDesignSelect
-                      selectedDesign={field.value}
+                    <ChannelCitySelect
+                      selectedValue={field.value}
                       onSelect={field.onChange}
                     />
                   </FormControl>
@@ -135,7 +134,7 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Create shop</Button>
+              <Button type="submit">Create channel</Button>
             </DialogFooter>
           </form>
         </Form>

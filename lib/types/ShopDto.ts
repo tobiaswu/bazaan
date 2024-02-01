@@ -1,11 +1,9 @@
-import { Designs } from '../enums';
+import { ShopDesigns } from '../enums';
 
 export type ShopDto = {
-  config: {
-    title: string;
-    description: string;
-    design: Designs;
-  };
+  title: string;
+  description: string;
+  design: ShopDesigns;
   products?: Product[];
 };
 

@@ -14,7 +14,6 @@ export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
 
   console.log(shops);
-  
 
   return (
     <div className="max-w-xs bg-slate-300 flex flex-col gap-4 h-screen p-2">
@@ -36,7 +35,9 @@ export const Sidebar = () => {
       </div>
 
       <Link
-        className={buttonVariants({ variant: 'ghost' })}
+        className={`flex items-center justify-between gap-2 ${buttonVariants({
+          variant: 'ghost',
+        })}`}
         href={RouteId.discovery}
       >
         <div className="flex items-center gap-2">
@@ -46,7 +47,7 @@ export const Sidebar = () => {
       </Link>
 
       <Link
-        href={RouteId.shop("")}
+        href={RouteId.shop('')}
         className={`flex items-center justify-between gap-2 ${buttonVariants({
           variant: 'ghost',
         })}`}
@@ -55,13 +56,16 @@ export const Sidebar = () => {
           <Store />
           My Shop
         </div>
-        <ShopCreateDialog
-          triggerElement={
-            <Button disabled={hasShop} variant="ghost" size="icon">
-              <PlusCircle />
-            </Button>
-          }
-        />
+
+        {!hasShop && (
+          <ShopCreateDialog
+            triggerElement={
+              <Button variant="ghost" size="icon">
+                <PlusCircle />
+              </Button>
+            }
+          />
+        )}
       </Link>
 
       <Separator />

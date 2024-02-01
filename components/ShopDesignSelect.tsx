@@ -1,41 +1,41 @@
 import Image from 'next/image';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
-import { Designs } from '@/lib/enums';
+import { ShopDesigns } from '@/lib/enums';
 
-export interface ShopDesignPickerProps {
-  selectedDesign: Designs;
+export interface ShopDesignSelectProps {
+  selectedDesign: ShopDesigns;
   // eslint-disable-next-line no-unused-vars
-  onSelect: (design: Designs) => void;
+  onSelect: (design: ShopDesigns) => void;
 }
 
 type ShopDesign = {
-  id: Designs;
+  id: ShopDesigns;
   title: string;
   thumbnailUrl: string;
 };
 
 const designs: ShopDesign[] = [
   {
-    id: Designs.EMERALD,
+    id: ShopDesigns.EMERALD,
     title: 'Emerald',
     thumbnailUrl: 'https://dummyimage.com/150x200',
   },
   {
-    id: Designs.SAPPHIRE,
+    id: ShopDesigns.SAPPHIRE,
     title: 'Sapphire',
     thumbnailUrl: 'https://dummyimage.com/150x200',
   },
   {
-    id: Designs.RUBY,
+    id: ShopDesigns.RUBY,
     title: 'Ruby',
     thumbnailUrl: 'https://dummyimage.com/150x200',
   },
 ];
 
-export const ShopDesignPicker = ({
+export const ShopDesignSelect = ({
   selectedDesign,
   onSelect,
-}: ShopDesignPickerProps) => {
+}: ShopDesignSelectProps) => {
   return (
     <ScrollArea className="w-full whitespace-nowrap rounded-md border">
       <div className="flex w-max space-x-4 p-4">
