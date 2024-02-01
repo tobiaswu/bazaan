@@ -1,9 +1,14 @@
-import { CreateChannelDialog } from '@/components/CreateChannelDialog';
-import { CreateShopDialog } from '@/components/CreateShopDialog';
+'use client';
+
+import { CreateChannelDialog } from '@/components/ChannelCreateDialog';
+import { ShopCreateDialog } from '@/components/ShopCreateDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useShop } from '@/hooks';
 
 export default function Dashboard() {
+  const { hasShop } = useShop();
+
   return (
     <div className="px-8 py-4 w-full">
       <div className="flex gap-4 items-center justify-between">
@@ -13,8 +18,12 @@ export default function Dashboard() {
           <CreateChannelDialog
             triggerElement={<Button variant="outline">Create a channel</Button>}
           />
-          <CreateShopDialog
-            triggerElement={<Button variant="outline">Create a shop</Button>}
+          <ShopCreateDialog
+            triggerElement={
+              <Button disabled={hasShop} variant="outline">
+                Create a shop
+              </Button>
+            }
           />
         </div>
       </div>

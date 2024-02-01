@@ -51,11 +51,11 @@ const formSchema = z.object({
   }),
 });
 
-export interface CreateShopDialogProps {
+export interface ShopCreateDialogProps {
   triggerElement: JSX.Element;
 }
 
-export const CreateShopDialog = ({ triggerElement }: CreateShopDialogProps) => {
+export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
