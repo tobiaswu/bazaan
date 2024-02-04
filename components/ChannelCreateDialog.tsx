@@ -48,13 +48,13 @@ const formSchema = z.object({
   }),
 });
 
-export interface CreateChannelDialogProps {
+export interface ChannelCreateDialogProps {
   triggerElement: JSX.Element;
 }
 
-export const CreateChannelDialog = ({
+export const ChannelCreateDialog = ({
   triggerElement,
-}: CreateChannelDialogProps) => {
+}: ChannelCreateDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

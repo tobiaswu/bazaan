@@ -1,5 +1,6 @@
 'use client';
 
+import { ProductCreateDialog } from '@/components/ProductCreateDialog';
 import { Button } from '@/components/ui/button';
 import { ShopDto } from '@/lib/types';
 import { Doc, getDoc } from '@junobuild/core-peer';
@@ -50,10 +51,15 @@ export default function Shop() {
               service.
             </p>
           </div>
-          <Button className="gap-2">
-            <PlusCircle />
-            Add product
-          </Button>
+          <ProductCreateDialog
+            triggerElement={
+              <Button className="gap-2">
+                <PlusCircle />
+                Add product
+              </Button>
+            }
+            shopId={shopId ?? ''}
+          />
         </div>
       </div>
     </section>
