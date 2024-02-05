@@ -1,7 +1,6 @@
-import { ProductDto } from '@/lib/types';
+import { ShopDto } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { setDoc, uploadFile } from '@junobuild/core-peer';
-import { nanoid } from 'nanoid';
+import { Doc, setDoc, uploadFile } from '@junobuild/core-peer';
 import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
@@ -53,7 +52,6 @@ const formSchema = z.object({
     }),
   image: z.any(),
   isActive: z.boolean(),
-  shopId: z.string().length(21),
   // quantity: z
   //   .number()
   //   .min(1, {
@@ -68,12 +66,12 @@ const formSchema = z.object({
 
 export interface ProductCreateDialogProps {
   triggerElement: JSX.Element;
-  shopId: string;
+  shop: Doc<ShopDto>;
 }
 
 export const ProductCreateDialog = ({
   triggerElement,
-  shopId,
+  shop,
 }: ProductCreateDialogProps) => {
   // const quantityValues = Array.from({ length: 50 }, (_, index) => index + 1);
   // const currencies = ['ICP', 'ckBTC', 'ckETH'];
@@ -85,28 +83,30 @@ export const ProductCreateDialog = ({
       description: '',
       image: undefined,
       isActive: false,
-      shopId: shopId,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const productId = nanoid();
-
     const { downloadUrl } = await uploadFile({
       data: values.image,
       collection: 'productImages',
     });
 
-    await setDoc<ProductDto>({
-      collection: 'products',
+    await setDoc<ShopDto>({
+      collection: 'shops',
       doc: {
-        key: productId,
+        ...shop,
         data: {
-          imageUrls: [downloadUrl],
-          shopId: values.shopId,
-          title: values.title,
-          description: values.description,
-          isActive: values.isActive,
+          ...shop.data,
+          products: [
+            ...(shop.data.products ?? []),
+            {
+              imageUrls: [downloadUrl],
+              title: values.title,
+              description: values.description,
+              isActive: values.isActive,
+            },
+          ],
         },
       },
     });
@@ -116,7 +116,6 @@ export const ProductCreateDialog = ({
     e: ChangeEvent<HTMLInputElement>,
     field: ControllerRenderProps<
       {
-        shopId: string;
         title: string;
         description: string;
         isActive: boolean;
