@@ -18,17 +18,17 @@ const designs: ShopDesign[] = [
   {
     id: ShopDesigns.EMERALD,
     title: 'Emerald',
-    thumbnailUrl: 'https://dummyimage.com/150x200',
+    thumbnailUrl: '/assets/emerald-design-wide_compressed.webp',
   },
   {
     id: ShopDesigns.SAPPHIRE,
     title: 'Sapphire',
-    thumbnailUrl: 'https://dummyimage.com/150x200',
+    thumbnailUrl: '/assets/sapphire-design-wide_compressed.webp',
   },
   {
     id: ShopDesigns.RUBY,
     title: 'Ruby',
-    thumbnailUrl: 'https://dummyimage.com/150x200',
+    thumbnailUrl: '/assets/ruby-design-wide_compressed.webp',
   },
 ];
 
@@ -51,9 +51,9 @@ export const ShopDesignSelect = ({
               <Image
                 src={design.thumbnailUrl}
                 alt={`Design: ${design.title}`}
-                className="aspect-[3/4] h-fit w-fit object-cover"
-                width={300}
-                height={400}
+                className="aspect-[3/4] object-cover h-[200] w-[150]"
+                width={150}
+                height={200}
               />
             </div>
             <figcaption className="pt-2 text-xs text-muted-foreground">
