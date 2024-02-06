@@ -25,6 +25,9 @@ import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { setDoc } from '@junobuild/core-peer';
 import { ChannelDto } from '@/lib/types';
+import { LoadingSpinner } from './LoadingSpinner';
+import { useState } from 'react';
+import { Sizes } from '@/lib/enums';
 
 const formSchema = z.object({
   title: z
@@ -55,6 +58,8 @@ export interface ChannelCreateDialogProps {
 export const ChannelCreateDialog = ({
   triggerElement,
 }: ChannelCreateDialogProps) => {
+  const [loading, setLoading] = useState(true);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,6 +71,7 @@ export const ChannelCreateDialog = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const channelId = nanoid();
+    setLoading(true);
 
     await setDoc<ChannelDto>({
       collection: 'channels',
@@ -73,7 +79,7 @@ export const ChannelCreateDialog = ({
         key: channelId,
         data: values,
       },
-    });
+    }).finally(() => setLoading(false));
   };
 
   return (
@@ -134,7 +140,14 @@ export const ChannelCreateDialog = ({
               )}
             />
             <DialogFooter>
-              <Button type="submit">Create channel</Button>
+              <Button
+                className="flex gap-2 items-center"
+                disabled={loading}
+                type="submit"
+              >
+                {loading && <LoadingSpinner size={Sizes.SM} />}
+                Create channel
+              </Button>
             </DialogFooter>
           </form>
         </Form>

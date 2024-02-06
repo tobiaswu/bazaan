@@ -15,7 +15,7 @@ import { Textarea } from './ui/textarea';
 import { ShopDesignSelect } from './ShopDesignSelect';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ShopDesigns } from '@/lib/enums';
+import { ShopDesigns, Sizes } from '@/lib/enums';
 import { useForm } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import {
@@ -28,6 +28,8 @@ import {
 } from './ui/form';
 import { setDoc } from '@junobuild/core-peer';
 import { ShopDto } from '@/lib/types';
+import { useState } from 'react';
+import { LoadingSpinner } from './LoadingSpinner';
 
 const formSchema = z.object({
   title: z
@@ -59,6 +61,8 @@ export interface ShopCreateDialogProps {
 }
 
 export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +74,7 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const shopId = nanoid();
+    setLoading(true);
 
     await setDoc<ShopDto>({
       collection: 'shops',
@@ -77,7 +82,7 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
         key: shopId,
         data: values,
       },
-    });
+    }).finally(() => setLoading(false));
   };
 
   return (
@@ -135,7 +140,14 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Create shop</Button>
+              <Button
+                className="flex gap-2 items-center"
+                disabled={loading}
+                type="submit"
+              >
+                {loading && <LoadingSpinner size={Sizes.SM} />}
+                Create shop
+              </Button>
             </DialogFooter>
           </form>
         </Form>
