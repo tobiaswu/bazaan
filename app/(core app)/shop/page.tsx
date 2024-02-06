@@ -14,14 +14,19 @@ export default function Shop() {
   const searchParams = useSearchParams();
   const shopId = searchParams.get('id');
   const [doc, setDoc] = useState<Doc<ShopDto> | undefined>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (shopId) {
+      setLoading(true);
       (async () =>
         await getDoc({
           collection: 'shops',
           key: shopId,
-        }).then((doc) => setDoc(doc as Doc<ShopDto> | undefined)))();
+        }).then((doc) => {
+          setLoading(false);
+          setDoc(doc as Doc<ShopDto> | undefined);
+        }))();
     }
   }, [shopId, doc?.data.products]);
 
@@ -31,15 +36,19 @@ export default function Shop() {
         <Image
           alt="content"
           className="object-cover object-center h-full w-full"
-          src="https://dummyimage.com/1200x500"
+          src={
+            doc?.data.design
+              ? `/assets/${doc.data.design}-design-wide_compressed.webp`
+              : 'https://dummyimage.com/1200x500'
+          }
           width={0}
           height={0}
         />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center bg-slate-100 bg-opacity-70 px-16 py-8 rounded-lg shadow-xl backdrop-blur-sm">
           <h1 className="text-4xl font-semibold capitalize">
             {doc?.data.title}
           </h1>
-          <p className="text-lg pt-4">{doc?.data.description}</p>
+          <p className="text-xl pt-8">{doc?.data.description}</p>
         </div>
       </div>
       <div className="flex flex-col mt-10">
