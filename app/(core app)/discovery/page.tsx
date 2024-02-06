@@ -20,7 +20,7 @@ export default function Discovery() {
           />
           <ShopCreateDialog
             triggerElement={
-              <Button disabled={hasShop} variant="outline">
+              <Button disabled={!hasShop} variant="outline">
                 Create a shop
               </Button>
             }
