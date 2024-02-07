@@ -30,6 +30,8 @@ import { setDoc } from '@junobuild/core-peer';
 import { ShopDto } from '@/lib/types';
 import { useState } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
+import { useRouter } from 'next/navigation';
+import { RouteId } from '@/lib';
 
 const formSchema = z.object({
   title: z
@@ -61,7 +63,9 @@ export interface ShopCreateDialogProps {
 }
 
 export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,12 +86,16 @@ export const ShopCreateDialog = ({ triggerElement }: ShopCreateDialogProps) => {
         key: shopId,
         data: values,
       },
-    }).finally(() => setLoading(false));
+    }).finally(() => {
+      setLoading(false);
+      setOpen(false);
+      router.push(RouteId.shop(shopId));
+    });
   };
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{triggerElement}</DialogTrigger>
+      <DialogTrigger asChild={open}>{triggerElement}</DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
           <DialogTitle>Create your shop</DialogTitle>

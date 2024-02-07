@@ -28,6 +28,8 @@ import { ChannelDto } from '@/lib/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { useState } from 'react';
 import { Sizes } from '@/lib/enums';
+import { useRouter } from 'next/navigation';
+import { RouteId } from '@/lib';
 
 const formSchema = z.object({
   title: z
@@ -58,7 +60,9 @@ export interface ChannelCreateDialogProps {
 export const ChannelCreateDialog = ({
   triggerElement,
 }: ChannelCreateDialogProps) => {
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,12 +83,16 @@ export const ChannelCreateDialog = ({
         key: channelId,
         data: values,
       },
-    }).finally(() => setLoading(false));
+    }).finally(() => {
+      setLoading(false);
+      setOpen(false);
+      router.push(RouteId.channel(channelId));
+    });
   };
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{triggerElement}</DialogTrigger>
+      <DialogTrigger asChild={open}>{triggerElement}</DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
           <DialogTitle>Create a channel</DialogTitle>

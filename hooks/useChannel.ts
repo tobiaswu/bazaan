@@ -2,27 +2,27 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '.';
 import { Doc, listDocs } from '@junobuild/core-peer';
 
-export const useShop = () => {
+export const useChannel = () => {
   const { user } = useAuth();
-  const [hasShop, setHasShop] = useState<boolean>(true);
+  const [hasChannel, setHasChannel] = useState<boolean>(true);
   const [data, setData] = useState<Doc<unknown>[]>([]);
 
-  const shops = async () => {
-    const shopList = await listDocs({
-      collection: 'shops',
+  const channels = async () => {
+    const channelList = await listDocs({
+      collection: 'channels',
       filter: {
         owner: user?.owner,
       },
     }).then((data) => data);
 
-    setHasShop(shopList.items_length > 0);
-    setData(shopList.items);
+    setHasChannel(channelList.items_length > 0);
+    setData(channelList.items);
   };
 
   useEffect(() => {
-    (async () => await shops())();
+    (async () => await channels())();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  return { hasShop, data };
+  return { hasChannel, data };
 };
