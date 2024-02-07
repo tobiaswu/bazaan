@@ -1,17 +1,24 @@
 'use client';
 
-import { LayoutDashboard, PlusCircle, Settings, Store } from 'lucide-react';
+import { ChevronRight, LayoutDashboard, Settings, Store } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button, buttonVariants } from './ui/button';
 import { Separator } from './ui/separator';
 import Link from 'next/link';
 import { RouteId } from '@/lib';
-import { ShopCreateDialog } from './ShopCreateDialog';
 import { SettingsDropdownMenu } from './SettingsDropdownMenu';
-import { useShop } from '@/hooks';
+import { useChannel, useShop } from '@/hooks';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './ui/accordion';
+import { ChannelDto } from '@/lib/types';
 
 export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
+  const { hasChannel, data: channels } = useChannel();
 
   return (
     <div className="bg-slate-200 flex flex-col w-64 gap-4 h-full overflow-auto p-2">
@@ -44,29 +51,52 @@ export const Sidebar = () => {
         </div>
       </Link>
 
-      <Link
-        href={RouteId.shop(shops[0]?.key)}
-        className={`flex items-center justify-between gap-2 ${buttonVariants({
-          variant: 'ghost',
-        })}`}
-      >
-        <div className="flex items-center gap-2">
-          <Store />
-          My Shop
-        </div>
+      {hasShop && (
+        <Link
+          href={RouteId.shop(shops[0]?.key)}
+          className={`flex items-center justify-between gap-2 ${buttonVariants({
+            variant: 'ghost',
+          })}`}
+        >
+          <div className="flex items-center gap-2">
+            <Store />
+            My Shop
+          </div>
+        </Link>
+      )}
 
-        {!hasShop && (
-          <ShopCreateDialog
-            triggerElement={
-              <Button variant="ghost" size="icon">
-                <PlusCircle />
-              </Button>
-            }
-          />
-        )}
-      </Link>
+      <Separator className="bg-slate-400" />
 
-      <Separator />
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Channels</AccordionTrigger>
+          <AccordionContent>
+            {hasChannel ? (
+              channels.map((channel) => {
+                return (
+                  <Link
+                    key={channel.key}
+                    href={RouteId.channel(channel.key)}
+                    className={buttonVariants({
+                      variant: 'ghost',
+                      className: 'w-full',
+                    })}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <ChevronRight />
+                      <p className="truncate">
+                        {(channel.data as ChannelDto).title}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              <p>Start by joining or creating a channel</p>
+            )}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
