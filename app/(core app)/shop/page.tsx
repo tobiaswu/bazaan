@@ -40,7 +40,7 @@ export default function Shop() {
 
   if (loading)
     return (
-      <section className="container px-4 py-4 mx-auto flex flex-col">
+      <section>
         <Skeleton className="h-64 w-full" />
         <div className="flex flex-wrap gap-8 justify-evenly mt-16">
           {[1, 2, 3, 4].map((item) => (
@@ -53,16 +53,12 @@ export default function Shop() {
   if (!shopData) return <div>No shop data available</div>;
 
   return (
-    <section className="container px-4 py-4 mx-auto flex flex-col">
+    <section>
       <div className="rounded-lg h-64 overflow-hidden relative">
         <Image
           alt="content"
           className="object-cover object-center h-full w-full"
-          src={
-            shopData.data.design
-              ? `/assets/${shopData.data.design}-design-wide_compressed.webp`
-              : 'https://dummyimage.com/1200x500'
-          }
+          src={`/assets/${shopData.data.design}-design-wide_compressed.webp`}
           width={0}
           height={0}
         />

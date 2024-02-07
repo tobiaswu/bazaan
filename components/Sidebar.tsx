@@ -14,7 +14,7 @@ export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
 
   return (
-    <div className="max-w-xs bg-slate-300 flex flex-col gap-4 h-screen p-2">
+    <div className="bg-slate-200 flex flex-col w-64 gap-4 h-full overflow-auto p-2">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Avatar>

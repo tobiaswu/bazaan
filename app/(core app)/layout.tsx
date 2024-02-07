@@ -10,9 +10,9 @@ export default function CoreAppLayout({
 }>) {
   return (
     <AuthProvider>
-      <div className="flex">
+      <div className="flex h-screen">
         <Sidebar />
-        {children}
+        <div className="flex-1 overflow-auto px-8 py-4">{children}</div>
       </div>
     </AuthProvider>
   );
