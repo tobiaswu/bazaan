@@ -11,6 +11,7 @@ import { signOut } from '@junobuild/core-peer';
 import { RouteId } from '@/lib';
 import { useState } from 'react';
 import { LoadingScreen } from './LoadingScreen';
+import Link from 'next/link';
 
 export interface SettingsDropdownMenuProps {
   triggerElement: JSX.Element;
@@ -37,6 +38,10 @@ export const SettingsDropdownMenu = ({
         <DropdownMenuTrigger asChild>{triggerElement}</DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <Link href={RouteId.wallet}>
+            <DropdownMenuItem>Balances</DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
         </DropdownMenuContent>

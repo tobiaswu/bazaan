@@ -32,7 +32,7 @@ export const Sidebar = () => {
         </div>
         <SettingsDropdownMenu
           triggerElement={
-            <Button variant="ghost" size="icon">
+            <Button className="justify-center" variant="ghost" size="icon">
               <Settings />
             </Button>
           }
