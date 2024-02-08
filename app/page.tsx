@@ -17,8 +17,8 @@ export default function Home() {
             </h1>
             <p className="mb-4 leading-relaxed text-2xl">
               A decentralized social network for trading food, tools and
-              services in your neighborhood. Support local farmers by buying
-              directly from them, no need for intermediaries.
+              services in your region. Support local farmers by buying directly
+              from them, no need for intermediaries.
             </p>
             <p className="mb-8 leading-relaxed text-lg">
               APP_NAME is running on the Internet Computer blockchain
