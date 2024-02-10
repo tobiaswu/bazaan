@@ -2,8 +2,8 @@
 
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
-import { initJuno } from '@junobuild/core-peer';
 import { useEffect } from 'react';
+import { initJuno } from '@junobuild/core-peer';
 
 const inter = Inter({ subsets: ['latin'] });
 

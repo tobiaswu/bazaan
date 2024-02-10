@@ -23,7 +23,9 @@ import {
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { LoadingSpinner } from './LoadingSpinner';
+import { Sizes } from '@/lib/enums';
 
 const MAX_FILE_SIZE = 2097152;
 const ALLOWED_FILE_TYPES = [
@@ -73,6 +75,9 @@ export const ProductCreateDialog = ({
   triggerElement,
   shop,
 }: ProductCreateDialogProps) => {
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(true);
+
   // const quantityValues = Array.from({ length: 50 }, (_, index) => index + 1);
   // const currencies = ['ICP', 'ckBTC', 'ckETH'];
 
@@ -87,6 +92,8 @@ export const ProductCreateDialog = ({
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+
     const { downloadUrl } = await uploadFile({
       data: values.image,
       collection: 'productImages',
@@ -109,6 +116,9 @@ export const ProductCreateDialog = ({
           ],
         },
       },
+    }).finally(() => {
+      setLoading(false);
+      setOpen(false);
     });
   };
 
@@ -145,7 +155,7 @@ export const ProductCreateDialog = ({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{triggerElement}</DialogTrigger>
+      <DialogTrigger asChild={open}>{triggerElement}</DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
           <DialogTitle>Add your product</DialogTitle>
@@ -266,7 +276,14 @@ export const ProductCreateDialog = ({
               />
             </div> */}
             <DialogFooter>
-              <Button type="submit">Add product</Button>
+              <Button
+                className="flex gap-2 items-center"
+                disabled={loading}
+                type="submit"
+              >
+                {loading && <LoadingSpinner size={Sizes.SM} />}
+                Add product
+              </Button>
             </DialogFooter>
           </form>
         </Form>
