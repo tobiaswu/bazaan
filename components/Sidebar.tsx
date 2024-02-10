@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronRight, LayoutDashboard, Settings, Store } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button, buttonVariants } from './ui/button';
 import { Separator } from './ui/separator';
 import Link from 'next/link';
@@ -15,6 +14,7 @@ import {
   AccordionTrigger,
 } from './ui/accordion';
 import { ChannelDto } from '@/lib/types';
+import { SidebarProfileInfo } from './SidebarProfileInfo';
 
 export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
@@ -22,14 +22,8 @@ export const Sidebar = () => {
 
   return (
     <div className="bg-slate-200 flex flex-col w-64 gap-4 h-full overflow-auto p-2">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src="" />
-            <AvatarFallback>AL</AvatarFallback>
-          </Avatar>
-          Amanda
-        </div>
+      <div className="flex items-center justify-between gap-2 bg-slate-300 p-2 rounded-lg">
+        <SidebarProfileInfo />
         <SettingsDropdownMenu
           triggerElement={
             <Button className="justify-center" variant="ghost" size="icon">
