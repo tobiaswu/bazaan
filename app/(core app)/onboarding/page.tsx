@@ -168,7 +168,7 @@ export default function Onboarding() {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <Info className="text-sm" />
+                                <Info className="w-5 h-5" />
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>
@@ -199,7 +199,7 @@ export default function Onboarding() {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <Info className="text-sm" />
+                                <Info className="w-5 h-5" />
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>File size limit: 2MB</p>

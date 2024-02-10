@@ -91,7 +91,7 @@ export default function Shop() {
             />
           </div>
         ) : (
-          <ShopProductGrid products={shopData.data.products} />
+          <ShopProductGrid shopData={shopData} />
         )}
       </div>
     </section>

@@ -1,14 +1,29 @@
-import { Product } from '@/lib/types';
+import { ShopDto } from '@/lib/types';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Skeleton } from './ui/skeleton';
 import { ShopProductCart } from './ShopProductCart';
+import { Button } from './ui/button';
+import { Ban, PlusCircle } from 'lucide-react';
+import { ProductCreateDialog } from './ProductCreateDialog';
+import { Doc } from '@junobuild/core-peer';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
+
+const PRODUCT_LIMIT = 5;
 
 export interface ShopProductGridProps {
-  products: Product[];
+  shopData: Doc<ShopDto>;
 }
 
-export const ShopProductGrid = ({ products }: ShopProductGridProps) => {
+export const ShopProductGrid = ({ shopData }: ShopProductGridProps) => {
+  const products = shopData.data.products!;
+  const limitReached = products.length >= PRODUCT_LIMIT;
+
   const [imageLoading, setImageLoading] = useState(true);
 
   const handleLoadingComplete = () => {
@@ -17,7 +32,45 @@ export const ShopProductGrid = ({ products }: ShopProductGridProps) => {
 
   return (
     <div>
-      <h2 className="font-semibold text-xl pb-2">All products</h2>
+      <div className="flex gap-4 items-center pb-2">
+        <h2 className="font-semibold text-xl">All products</h2>
+        {limitReached ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="flex gap-2 items-center"
+                  size="sm"
+                  variant="secondary"
+                >
+                  <Ban className="w-5 h-5" />
+                  Add
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  Currently you can create only 5 products. We&apos;re lifting
+                  the limit soon!
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <ProductCreateDialog
+            triggerElement={
+              <Button
+                className="flex gap-2 items-center"
+                size="sm"
+                variant="outline"
+              >
+                <PlusCircle className="w-5 h-5" />
+                Add
+              </Button>
+            }
+            shop={shopData}
+          />
+        )}
+      </div>
       <div className="flex flex-wrap">
         {products.map((product) => {
           return (

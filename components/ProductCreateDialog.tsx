@@ -26,6 +26,13 @@ import { Button } from './ui/button';
 import { ChangeEvent, useState } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Sizes } from '@/lib/enums';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
+import { Info } from 'lucide-react';
 
 const MAX_FILE_SIZE = 2097152;
 const ALLOWED_FILE_TYPES = [
@@ -200,7 +207,19 @@ export const ProductCreateDialog = ({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Photo (file size limit: 2MB)</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    Photo
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Info className="w-5 h-5" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>File size limit: 2MB</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="file"

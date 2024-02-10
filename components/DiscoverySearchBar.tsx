@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
+import { Ban } from 'lucide-react';
 
 export interface Props {}
 
@@ -25,7 +26,10 @@ export const DiscoverySearchBar = ({}: Props) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="secondary">Create a channel</Button>
+                <Button className="flex gap-2 items-center" variant="secondary">
+                  <Ban className="w-5 h-5" />
+                  Create a channel
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>
@@ -44,7 +48,10 @@ export const DiscoverySearchBar = ({}: Props) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="secondary">Create a shop</Button>
+                <Button className="flex gap-2 items-center" variant="secondary">
+                  <Ban className="w-5 h-5" />
+                  Create a shop
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>
