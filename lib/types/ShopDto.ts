@@ -8,15 +8,13 @@ export type ShopDto = {
 };
 
 export type Product = {
+  id: string;
   title: string;
   description: string;
   imageUrls?: string[];
-  quantity?: number;
-  price?: {
-    currency: string;
-    value: number;
-  };
-  isActive: boolean;
-  // product location (zip)
-  // shipping terms (collection, shipping, price)
+  quantity: number;
+  currency: string;
+  price: string;
+  // TODO: add product location (zip)
+  // TODO: add shipping terms (collection, delivery, price)
 };

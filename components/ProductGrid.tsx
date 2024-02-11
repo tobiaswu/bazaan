@@ -2,9 +2,9 @@ import { ShopDto } from '@/lib/types';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Skeleton } from './ui/skeleton';
-import { ShopProductCart } from './ShopProductCart';
+import { ProductCart } from './ProductCart';
 import { Button } from './ui/button';
-import { Ban, PlusCircle } from 'lucide-react';
+import { Ban, MoreVertical, PlusCircle } from 'lucide-react';
 import { ProductCreateDialog } from './ProductCreateDialog';
 import { Doc } from '@junobuild/core-peer';
 import {
@@ -13,14 +13,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
+import { ProductDropdownMenu } from './ProductDropdownMenu';
 
 const PRODUCT_LIMIT = 5;
 
-export interface ShopProductGridProps {
+export interface ProductGridProps {
   shopData: Doc<ShopDto>;
 }
 
-export const ShopProductGrid = ({ shopData }: ShopProductGridProps) => {
+export const ProductGrid = ({ shopData }: ProductGridProps) => {
   const products = shopData.data.products!;
   const limitReached = products.length >= PRODUCT_LIMIT;
 
@@ -79,8 +80,23 @@ export const ShopProductGrid = ({ shopData }: ShopProductGridProps) => {
                 className="block relative h-48 rounded overflow-hidden"
                 role="button"
               >
+                <div className="absolute top-1 right-1">
+                  <ProductDropdownMenu
+                    productId={product.id}
+                    shopData={shopData}
+                    triggerElement={
+                      <Button
+                        className="justify-center"
+                        variant="ghost"
+                        size="icon"
+                      >
+                        <MoreVertical />
+                      </Button>
+                    }
+                  />
+                </div>
                 {imageLoading && <Skeleton className="h-full w-full" />}
-                <ShopProductCart
+                <ProductCart
                   product={product}
                   triggerElement={
                     <Image
@@ -104,7 +120,16 @@ export const ShopProductGrid = ({ shopData }: ShopProductGridProps) => {
                 <h2 className="text-gray-900 text-lg font-medium">
                   {product.title}
                 </h2>
-                {/* <p className="mt-1">$16.00</p> */}
+                <div className="font-medium flex items-center gap-1 mt-1">
+                  <p>{product.price} ICP</p>
+                  <Image
+                    className="w-auto h-10"
+                    src="/icp-token-white.svg"
+                    alt="icp token"
+                    width={0}
+                    height={0}
+                  />
+                </div>
               </div>
             </div>
           );

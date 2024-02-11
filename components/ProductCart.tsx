@@ -12,17 +12,14 @@ import { Input } from './ui/input';
 import { useState } from 'react';
 import { Separator } from './ui/separator';
 
-export interface ShopProductCartProps {
+export interface ProductCartProps {
   product: Product;
   triggerElement: JSX.Element;
 }
 
-export const ShopProductCart = ({
-  product,
-  triggerElement,
-}: ShopProductCartProps) => {
+export const ProductCart = ({ product, triggerElement }: ProductCartProps) => {
   const [quantity, setQuantity] = useState(0);
-  const totalPrice = quantity * (product.price?.value ?? 1);
+  const totalPrice = quantity * Number(product.price);
 
   return (
     <Sheet>
@@ -37,8 +34,8 @@ export const ShopProductCart = ({
           <div>
             <p className="font-semibold">Price per unit</p>
             <div className="flex gap-2">
-              <p>{product.price?.value ?? 1}</p>
-              <p>{product.price?.currency ?? 'ICP'}</p>
+              <p>{product.price}</p>
+              <p>{product.currency}</p>
             </div>
           </div>
 
@@ -46,6 +43,7 @@ export const ShopProductCart = ({
             <p className="font-semibold">Select quantity</p>
             <Input
               type="number"
+              defaultValue={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
           </div>
@@ -54,11 +52,11 @@ export const ShopProductCart = ({
             <p className="text-lg font-bold">Total price</p>
             <div className="flex gap-2">
               <p>{totalPrice}</p>
-              <p>{product.price?.currency ?? 'ICP'}</p>
+              <p>{product.currency}</p>
             </div>
           </div>
 
-          <Button className="justify-center mt-4" type="submit">
+          <Button className="justify-center mt-4" disabled type="submit">
             Send Order
           </Button>
         </div>

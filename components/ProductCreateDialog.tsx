@@ -25,7 +25,7 @@ import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { ChangeEvent, useState } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
-import { Sizes } from '@/lib/enums';
+import { Currencies, Sizes } from '@/lib/enums';
 import {
   Tooltip,
   TooltipContent,
@@ -33,6 +33,16 @@ import {
   TooltipTrigger,
 } from './ui/tooltip';
 import { Info } from 'lucide-react';
+import { nanoid } from 'nanoid';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { Label } from './ui/label';
+import Image from 'next/image';
 
 const MAX_FILE_SIZE = 2097152;
 const ALLOWED_FILE_TYPES = [
@@ -41,6 +51,7 @@ const ALLOWED_FILE_TYPES = [
   'image/gif',
   'image/webp',
 ];
+const ALLOWED_QUANTITY = Array.from({ length: 50 }, (_, index) => index + 1);
 
 const formSchema = z.object({
   title: z
@@ -60,17 +71,16 @@ const formSchema = z.object({
       message: 'Description must not be longer than 160 characters.',
     }),
   image: z.any(),
-  isActive: z.boolean(),
-  // quantity: z
-  //   .number()
-  //   .min(1, {
-  //     message: 'Quantity must be at least 1.',
-  //   })
-  //   .max(50, {
-  //     message: 'Maximum allowed quantity is 50 at the moment.',
-  //   }),
-  // currency: z.string(),
-  // value: z.number(),
+  quantity: z
+    .number()
+    .min(1, {
+      message: 'Quantity must be at least 1.',
+    })
+    .max(50, {
+      message: 'Maximum allowed quantity is 50 at the moment.',
+    }),
+  currency: z.string(),
+  price: z.string(),
 });
 
 export interface ProductCreateDialogProps {
@@ -83,10 +93,7 @@ export const ProductCreateDialog = ({
   shop,
 }: ProductCreateDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(true);
-
-  // const quantityValues = Array.from({ length: 50 }, (_, index) => index + 1);
-  // const currencies = ['ICP', 'ckBTC', 'ckETH'];
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,11 +101,14 @@ export const ProductCreateDialog = ({
       title: '',
       description: '',
       image: undefined,
-      isActive: false,
+      quantity: 1,
+      currency: Currencies.ICP,
+      price: '0',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const productId = nanoid();
     setLoading(true);
 
     const { downloadUrl } = await uploadFile({
@@ -115,10 +125,13 @@ export const ProductCreateDialog = ({
           products: [
             ...(shop.data.products ?? []),
             {
+              id: productId,
               imageUrls: [downloadUrl],
               title: values.title,
               description: values.description,
-              isActive: values.isActive,
+              quantity: values.quantity,
+              currency: values.currency,
+              price: values.price,
             },
           ],
         },
@@ -135,7 +148,9 @@ export const ProductCreateDialog = ({
       {
         title: string;
         description: string;
-        isActive: boolean;
+        quantity: number;
+        currency: string;
+        price: string;
         image?: any;
       },
       'image'
@@ -161,8 +176,8 @@ export const ProductCreateDialog = ({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild={open}>{triggerElement}</DialogTrigger>
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+      <DialogTrigger asChild>{triggerElement}</DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
           <DialogTitle>Add your product</DialogTitle>
@@ -231,7 +246,36 @@ export const ProductCreateDialog = ({
                 </FormItem>
               )}
             />
-            {/* <div className="flex gap-2 justify-between">
+            <div className="flex gap-4 justify-between">
+              <div>
+                <Label htmlFor="currency">Currency</Label>
+                <div
+                  className="font-medium flex items-center gap-1 mt-2"
+                  id="currency"
+                >
+                  <Image
+                    className="w-auto h-10"
+                    src="/icp-token-white.svg"
+                    alt="icp token"
+                    width={0}
+                    height={0}
+                  />
+                  ICP
+                </div>
+              </div>
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Value</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="quantity"
@@ -241,10 +285,10 @@ export const ProductCreateDialog = ({
                     <FormControl>
                       <Select>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select the quantity" />
+                          <SelectValue placeholder="Select quantity" />
                         </SelectTrigger>
                         <SelectContent>
-                          {quantityValues.map((value) => (
+                          {ALLOWED_QUANTITY.map((value) => (
                             <SelectItem key={value} value={value.toString()}>
                               {value}
                             </SelectItem>
@@ -256,44 +300,7 @@ export const ProductCreateDialog = ({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="currency"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Currency</FormLabel>
-                    <FormControl>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select the currency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {currencies.map((currency) => (
-                            <SelectItem key={currency} value={currency}>
-                              {currency}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="value"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Value</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div> */}
+            </div>
             <DialogFooter>
               <Button
                 className="flex gap-2 items-center"

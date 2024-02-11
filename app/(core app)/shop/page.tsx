@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductCreateDialog } from '@/components/ProductCreateDialog';
-import { ShopProductGrid } from '@/components/ShopProductGrid';
+import { ProductGrid } from '@/components/ProductGrid';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ShopDto } from '@/lib/types';
@@ -91,7 +91,7 @@ export default function Shop() {
             />
           </div>
         ) : (
-          <ShopProductGrid shopData={shopData} />
+          <ProductGrid shopData={shopData} />
         )}
       </div>
     </section>
