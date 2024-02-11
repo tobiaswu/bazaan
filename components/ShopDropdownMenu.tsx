@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Doc, setDoc } from '@junobuild/core-peer';
+import { Doc, deleteDoc } from '@junobuild/core-peer';
 import { useState } from 'react';
 import { Trash } from 'lucide-react';
 import {
@@ -21,37 +21,25 @@ import { ShopDto } from '@/lib/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Sizes } from '@/lib/enums';
 
-export interface ProductDropdownMenuProps {
-  productId: string;
-  shopData: Doc<ShopDto>;
+export interface ShopDropdownMenuProps {
+  shop: Doc<ShopDto>;
   triggerElement: JSX.Element;
 }
 
-export const ProductDropdownMenu = ({
-  productId,
-  shopData,
+export const ShopDropdownMenu = ({
+  shop,
   triggerElement,
-}: ProductDropdownMenuProps) => {
+}: ShopDropdownMenuProps) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
-    const filteredProducts = shopData.data.products?.filter(
-      (item) => item.id !== productId
-    );
-    const newShopData = {
-      ...shopData.data,
-      products: filteredProducts,
-    };
 
-    await setDoc<ShopDto>({
+    await deleteDoc<ShopDto>({
       collection: 'shops',
-      doc: {
-        ...shopData,
-        data: newShopData,
-      },
+      doc: shop,
     }).finally(() => {
       setLoading(false);
       setDeleteOpen(false);
@@ -64,10 +52,12 @@ export const ProductDropdownMenu = ({
         <DropdownMenuTrigger asChild>{triggerElement}</DropdownMenuTrigger>
         <DropdownMenuContent>
           {/* TODO: add edit option */}
-          {/* TODO: add pause option */}
           <DropdownMenuItem
             className="gap-2"
-            onClick={() => setDeleteOpen(!deleteOpen)}
+            onClick={(e) => {
+              e.preventDefault();
+              setDeleteOpen(!deleteOpen);
+            }}
           >
             <Trash className="w-4 h-4" />
             Delete
@@ -80,11 +70,11 @@ export const ProductDropdownMenu = ({
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>
-                Are you sure you want to delete this product?
+                Are you sure you want to delete this shop?
               </AlertDialogTitle>
               <AlertDialogDescription>
                 This action cannot be undone. This will permanently delete your
-                product and remove the data from the blockchain.
+                shop, all its products and remove the data from the blockchain.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

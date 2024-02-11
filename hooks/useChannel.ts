@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '.';
 import { Doc, listDocs } from '@junobuild/core-peer';
+import { ChannelDto } from '@/lib/types';
 
 export const useChannel = () => {
   const { user } = useAuth();
   const [hasChannel, setHasChannel] = useState<boolean>(true);
-  const [data, setData] = useState<Doc<unknown>[]>([]);
+  const [data, setData] = useState<Doc<ChannelDto>[]>([]);
 
   const channels = async () => {
     const channelList = await listDocs({
@@ -16,7 +17,7 @@ export const useChannel = () => {
     }).then((data) => data);
 
     setHasChannel(channelList.items_length > 0);
-    setData(channelList.items);
+    setData(channelList.items as Doc<ChannelDto>[]);
   };
 
   useEffect(() => {

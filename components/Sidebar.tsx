@@ -1,6 +1,12 @@
 'use client';
 
-import { ChevronRight, LayoutDashboard, Settings, Store } from 'lucide-react';
+import {
+  ChevronRight,
+  LayoutDashboard,
+  MoreVertical,
+  Settings,
+  Store,
+} from 'lucide-react';
 import { Button, buttonVariants } from './ui/button';
 import { Separator } from './ui/separator';
 import Link from 'next/link';
@@ -15,6 +21,7 @@ import {
 } from './ui/accordion';
 import { ChannelDto } from '@/lib/types';
 import { SidebarProfileInfo } from './SidebarProfileInfo';
+import { ShopDropdownMenu } from './ShopDropdownMenu';
 
 export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
@@ -56,6 +63,14 @@ export const Sidebar = () => {
             <Store />
             My Shop
           </div>
+          <ShopDropdownMenu
+            shop={shops[0]}
+            triggerElement={
+              <Button className="justify-center" variant="ghost" size="icon">
+                <MoreVertical />
+              </Button>
+            }
+          />
         </Link>
       )}
 

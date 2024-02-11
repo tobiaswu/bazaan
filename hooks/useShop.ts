@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '.';
 import { Doc, listDocs } from '@junobuild/core-peer';
+import { ShopDto } from '@/lib/types';
 
 export const useShop = () => {
   const { user } = useAuth();
   const [hasShop, setHasShop] = useState<boolean>(true);
-  const [data, setData] = useState<Doc<unknown>[]>([]);
+  const [data, setData] = useState<Doc<ShopDto>[]>([]);
 
   const shops = async () => {
     const shopList = await listDocs({
@@ -16,7 +17,7 @@ export const useShop = () => {
     }).then((data) => data);
 
     setHasShop(shopList.items_length > 0);
-    setData(shopList.items);
+    setData(shopList.items as Doc<ShopDto>[]);
   };
 
   useEffect(() => {
