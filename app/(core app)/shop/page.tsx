@@ -58,7 +58,7 @@ export default function Shop() {
         <Image
           alt="content"
           className="object-cover object-center h-full w-full"
-          src={`/assets/${shopData.data.design}-design-wide_compressed.webp`}
+          src={`/assets/${shopData.data.design}-design_compressed.webp`}
           width={0}
           height={0}
         />

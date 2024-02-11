@@ -47,11 +47,7 @@ export const AuthProvider = ({ children }: { children?: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, setLoading }}>
-      {user !== undefined && user !== null ? (
-        <div>{children}</div>
-      ) : (
-        <p>Not signed in.</p>
-      )}
+      {user !== undefined && user !== null && <div>{children}</div>}
 
       {loading ? <LoadingScreen /> : undefined}
     </AuthContext.Provider>

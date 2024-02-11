@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { RouteId } from '@/lib';
 import { ChannelDto, ShopDto } from '@/lib/types';
 import { Doc, ListResults, listDocs } from '@junobuild/core-peer';
-import { Box, MessageCircle, MoveRight, Star, User } from 'lucide-react';
+import { MoveRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -75,7 +75,7 @@ export default function Discovery() {
             ))
           ) : channelsError ? (
             <div>Error: {channelsError.message}</div>
-          ) : channelsData ? (
+          ) : channelsData?.items_length ? (
             channelsData.items.map((item) => {
               return (
                 <div key={item.key} className="p-4 lg:w-1/3">
@@ -96,21 +96,14 @@ export default function Discovery() {
                       Join Channel
                       <MoveRight />
                     </Link>
-                    <div className="text-center mt-2 leading-none flex justify-center absolute bottom-0 left-0 w-full py-4">
-                      <span className="text-gray-400 mr-3 inline-flex items-center leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                        <User />
-                        1.2K
-                      </span>
-                      <span className="text-gray-400 inline-flex items-center leading-none text-sm">
-                        <MessageCircle />6
-                      </span>
-                    </div>
+                    {/* TODO: add members count */}
+                    {/* TODO: add to favorites */}
                   </div>
                 </div>
               );
             })
           ) : (
-            <div>No channels data available</div>
+            <p>No channels data available</p>
           )}
         </div>
       </div>
@@ -124,7 +117,7 @@ export default function Discovery() {
             ))
           ) : shopsError ? (
             <div>Error: {shopsError.message}</div>
-          ) : shopsData ? (
+          ) : shopsData?.items_length ? (
             shopsData.items.map((item) => {
               const productCount = item.data.products?.length;
               return (
@@ -133,7 +126,7 @@ export default function Discovery() {
                     <Link href={RouteId.shop(item.key)}>
                       <Image
                         className="lg:h-48 md:h-36 w-full object-cover object-center"
-                        src={`/assets/${item.data.design}-design-wide_compressed.webp`}
+                        src={`/assets/${item.data.design}-design_compressed.webp`}
                         alt="shop cover"
                         width={0}
                         height={0}
@@ -159,13 +152,9 @@ export default function Discovery() {
                           Visit Shop
                           <MoveRight />
                         </Link>
-                        <span className="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                          <Box />
-                          1.2K
-                        </span>
-                        <span className="text-gray-400 inline-flex items-center leading-none text-sm">
-                          <Star />5
-                        </span>
+                        {/* TODO: add sold products count */}
+                        {/* TODO: add rating */}
+                        {/* TODO: add to favorites */}
                       </div>
                     </div>
                   </div>
@@ -173,7 +162,7 @@ export default function Discovery() {
               );
             })
           ) : (
-            <div>No shops data available</div>
+            <p>No shops data available</p>
           )}
         </div>
       </div>

@@ -18,17 +18,17 @@ const designs: ShopDesign[] = [
   {
     id: ShopDesigns.EMERALD,
     title: 'Emerald',
-    thumbnailUrl: '/assets/emerald-design-wide_compressed.webp',
+    thumbnailUrl: '/assets/emerald-design_compressed.webp',
   },
   {
     id: ShopDesigns.SAPPHIRE,
     title: 'Sapphire',
-    thumbnailUrl: '/assets/sapphire-design-wide_compressed.webp',
+    thumbnailUrl: '/assets/sapphire-design_compressed.webp',
   },
   {
     id: ShopDesigns.RUBY,
     title: 'Ruby',
-    thumbnailUrl: '/assets/ruby-design-wide_compressed.webp',
+    thumbnailUrl: '/assets/ruby-design_compressed.webp',
   },
 ];
 
