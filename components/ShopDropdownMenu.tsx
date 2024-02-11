@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Doc, deleteDoc } from '@junobuild/core-peer';
+import { Doc, deleteAsset, deleteDoc } from '@junobuild/core-peer';
 import { useState } from 'react';
 import { Trash } from 'lucide-react';
 import {
@@ -37,13 +37,30 @@ export const ShopDropdownMenu = ({
     e.preventDefault();
     setLoading(true);
 
-    await deleteDoc<ShopDto>({
-      collection: 'shops',
-      doc: shop,
-    }).finally(() => {
+    try {
+      // TODO: use "deleteManyAssets" to delete multiple assets at once
+      shop.data.products?.forEach(async (product) => {
+        const imageToDelete = product.imageUrl;
+
+        if (imageToDelete) {
+          const imagePath = imageToDelete.split('/').pop();
+          await deleteAsset({
+            collection: 'productImages',
+            fullPath: '/productImages/' + imagePath,
+          });
+        }
+      });
+
+      await deleteDoc<ShopDto>({
+        collection: 'shops',
+        doc: shop,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoading(false);
       setDeleteOpen(false);
-    });
+    }
   };
 
   return (

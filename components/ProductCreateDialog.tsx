@@ -108,38 +108,45 @@ export const ProductCreateDialog = ({
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const productId = nanoid();
     setLoading(true);
+    const productId = nanoid();
+    let imageUrl;
 
-    const { downloadUrl } = await uploadFile({
-      data: values.image,
-      collection: 'productImages',
-    });
+    try {
+      if (values.image) {
+        await uploadFile({
+          data: values.image,
+          collection: 'productImages',
+        }).then((data) => (imageUrl = data.downloadUrl));
+      }
 
-    await setDoc<ShopDto>({
-      collection: 'shops',
-      doc: {
-        ...shop,
-        data: {
-          ...shop.data,
-          products: [
-            ...(shop.data.products ?? []),
-            {
-              id: productId,
-              imageUrls: [downloadUrl],
-              title: values.title,
-              description: values.description,
-              quantity: values.quantity,
-              currency: values.currency,
-              price: values.price,
-            },
-          ],
+      await setDoc<ShopDto>({
+        collection: 'shops',
+        doc: {
+          ...shop,
+          data: {
+            ...shop.data,
+            products: [
+              ...(shop.data.products ?? []),
+              {
+                id: productId,
+                imageUrl: imageUrl,
+                title: values.title,
+                description: values.description,
+                quantity: values.quantity,
+                currency: values.currency,
+                price: values.price,
+              },
+            ],
+          },
         },
-      },
-    }).finally(() => {
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoading(false);
       setOpen(false);
-    });
+    }
   };
 
   const handleFileInputChange = (

@@ -11,9 +11,7 @@ import {
 } from './ui/tooltip';
 import { Ban } from 'lucide-react';
 
-export interface Props {}
-
-export const DiscoverySearchBar = ({}: Props) => {
+export const DiscoverySearchBar = () => {
   const { hasShop } = useShop();
   const { hasChannel } = useChannel();
 

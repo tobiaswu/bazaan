@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/tooltip';
 import { RouteId } from '@/lib';
 import { Sizes } from '@/lib/enums';
-import { ProfileDto } from '@/lib/types/ProfileDto';
+import { ProfileDto } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { setDoc, uploadFile } from '@junobuild/core-peer';
 import { Info } from 'lucide-react';
@@ -75,28 +75,35 @@ export default function Onboarding() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const profileId = nanoid();
     setLoading(true);
+    const profileId = nanoid();
+    let avatarUrl;
 
-    const { downloadUrl } = await uploadFile({
-      data: values.avatar,
-      collection: 'avatars',
-    });
+    try {
+      if (values.avatar) {
+        await uploadFile({
+          data: values.avatar,
+          collection: 'avatars',
+        }).then((data) => (avatarUrl = data.downloadUrl));
+      }
 
-    await setDoc<ProfileDto>({
-      collection: 'profiles',
-      doc: {
-        data: {
-          username: values.username,
-          country: values.country,
-          avatarUrl: downloadUrl,
+      await setDoc<ProfileDto>({
+        collection: 'profiles',
+        doc: {
+          data: {
+            username: values.username,
+            country: values.country,
+            avatarUrl: avatarUrl,
+          },
+          key: profileId,
         },
-        key: profileId,
-      },
-    }).finally(() => {
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoading(false);
       router.push(RouteId.discovery);
-    });
+    }
   };
 
   const handleFileInputChange = (

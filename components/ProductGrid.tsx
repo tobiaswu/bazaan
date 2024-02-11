@@ -102,10 +102,7 @@ export const ProductGrid = ({ shopData }: ProductGridProps) => {
                     <Image
                       alt={product.title}
                       className="object-cover object-center w-full h-full block"
-                      src={
-                        product.imageUrls?.[0] ??
-                        'https://dummyimage.com/420x260'
-                      }
+                      src={product.imageUrl ?? 'https://dummyimage.com/420x260'}
                       width={0}
                       height={0}
                       onLoad={handleLoadingComplete}

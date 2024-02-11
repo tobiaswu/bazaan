@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Doc, ListResults, listDocs } from '@junobuild/core-peer';
-import { ProfileDto } from '@/lib/types/ProfileDto';
+import { ProfileDto } from '@/lib/types';
 import { useAuth } from '@/hooks';
 import { Skeleton } from './ui/skeleton';
 
