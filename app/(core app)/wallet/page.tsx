@@ -1,3 +1,4 @@
+import { WalletDeposit } from '@/components/WalletDeposit';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -7,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import Image from 'next/image';
 
 export default function Wallet() {
   return (
@@ -24,15 +26,25 @@ export default function Wallet() {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="font-medium">
-              {/* Logo */}
+            <TableCell className="font-medium flex items-center gap-1">
+              <Image
+                className="w-auto h-10"
+                src="/icp-token-white.svg"
+                alt="icp token"
+                width={0}
+                height={0}
+              />
               ICP
             </TableCell>
             <TableCell>0</TableCell>
             <TableCell>0</TableCell>
             <TableCell className="text-right">
-              <Button variant="link">DEPOSIT</Button>
-              <Button variant="link">WITHDRAW</Button>
+              <WalletDeposit
+                triggerElement={<Button variant="link">DEPOSIT</Button>}
+              />
+              <Button disabled variant="link">
+                WITHDRAW
+              </Button>
             </TableCell>
           </TableRow>
         </TableBody>
