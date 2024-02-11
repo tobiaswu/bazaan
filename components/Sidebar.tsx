@@ -22,6 +22,7 @@ import {
 import { ChannelDto } from '@/lib/types';
 import { SidebarProfileInfo } from './SidebarProfileInfo';
 import { ShopDropdownMenu } from './ShopDropdownMenu';
+import { ChannelDropdownMenu } from './ChannelDropdownMenu';
 
 export const Sidebar = () => {
   const { hasShop, data: shops } = useShop();
@@ -67,7 +68,7 @@ export const Sidebar = () => {
             shop={shops[0]}
             triggerElement={
               <Button className="justify-center" variant="ghost" size="icon">
-                <MoreVertical />
+                <MoreVertical className="w-5 h-5" />
               </Button>
             }
           />
@@ -86,10 +87,12 @@ export const Sidebar = () => {
                   <Link
                     key={channel.key}
                     href={RouteId.channel(channel.key)}
-                    className={buttonVariants({
-                      variant: 'ghost',
-                      className: 'w-full',
-                    })}
+                    className={`flex items-center justify-between gap-2 ${buttonVariants(
+                      {
+                        variant: 'ghost',
+                        className: 'w-full',
+                      }
+                    )}`}
                   >
                     <div className="flex items-center gap-2 truncate">
                       <ChevronRight />
@@ -97,6 +100,18 @@ export const Sidebar = () => {
                         {(channel.data as ChannelDto).title}
                       </p>
                     </div>
+                    <ChannelDropdownMenu
+                      channel={channel}
+                      triggerElement={
+                        <Button
+                          className="justify-center"
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <MoreVertical className="w-5 h-5" />
+                        </Button>
+                      }
+                    />
                   </Link>
                 );
               })
