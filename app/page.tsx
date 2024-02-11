@@ -21,7 +21,7 @@ export default function Home() {
               directly from them, no need for intermediaries.
             </p>
             <p className="mb-8 leading-relaxed text-lg">
-              APP_NAME is running on the Internet Computer blockchain
+              Bazaan is running on the Internet Computer blockchain
             </p>
             <SignInButton />
           </div>
