@@ -121,7 +121,7 @@ export const ProductGrid = ({ shopData }: ProductGridProps) => {
                   <p>{product.price} ICP</p>
                   <Image
                     className="w-auto h-10"
-                    src="/icp-token-white.svg"
+                    src="/assets/icp-token-white.svg"
                     alt="icp token"
                     width={0}
                     height={0}

@@ -28,8 +28,8 @@ export default function Home() {
           <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
             <Image
               className="object-cover object-center rounded"
-              alt="hero"
-              src="https://dummyimage.com/720x600"
+              alt="Bazaan hero shop example"
+              src="/assets/bazaan-hero.webp"
               width={720}
               height={600}
             />
@@ -38,7 +38,7 @@ export default function Home() {
         <div className="container">
           <Image
             className="w-auto h-6"
-            src="/100-on-chain-icp-badge.svg"
+            src="/assets/100-on-chain-icp-badge.svg"
             alt="Built 100% on-chain Internet Computer badge"
             width={0}
             height={0}
